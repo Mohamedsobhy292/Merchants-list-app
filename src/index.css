@@ -14,12 +14,11 @@ body {
 .App {
   padding-left: 0;
   margin: auto;
-
 }
 
 @media screen and (min-width: 992px) {
   .App {
-    padding-left: 250px;
+    padding-left: 200px;
   }
 }
 

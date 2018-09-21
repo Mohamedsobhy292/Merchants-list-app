@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
+import { fetchMerchants } from "../../actions";
 import MerchantItem from "./list-item";
 import Header from "./header";
 
@@ -10,6 +11,9 @@ export const MerchantsWrapper = styled.div`
 `;
 
 class Merchants extends Component {
+  componentDidMount() {
+    this.props.fetchMerchants();
+  }
   render() {
     const merchantsList = Object.values(this.props.merchants.items);
     return (
@@ -30,4 +34,11 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Merchants);
+const mapDispatchToProps = {
+  fetchMerchants
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Merchants);

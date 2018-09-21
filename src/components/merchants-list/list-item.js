@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Field, reduxForm } from "redux-form";
 import styled, { css } from "styled-components";
 import defaultImg from "./avatar.png";
 import { Link } from "react-router-dom";
+import { required, email, number } from "../../utils/validation";
 
 import { deleteMerchant } from "../../actions";
 
@@ -85,6 +87,16 @@ export const ActionsCell = styled(ItemCell)`
   }
 `;
 
+const renderField = ({ input, label, type, meta: { touched, error } }) => (
+  <div>
+    <label>{label}</label>
+    <div>
+      <InputField {...input} placeholder={label} type={type} />
+      {touched && (error && <span>{error}</span>)}
+    </div>
+  </div>
+);
+
 class Merchant extends Component {
   state = {
     disableDeleteBtn: false,
@@ -121,7 +133,13 @@ class Merchant extends Component {
           <div className="content">
             <h4 className="name">
               {this.state.editMode ? (
-                <InputField type="text" value={firstName} />
+                <Field
+                  name="firstName"
+                  type="text"
+                  component={renderField}
+                  placeholder="firstName"
+                  validate={[required]}
+                />
               ) : (
                 <Link to={`/merchant/${_id}`}>
                   {firstName} {lastName}
@@ -166,11 +184,25 @@ class Merchant extends Component {
   }
 }
 
+Merchant = reduxForm({
+  // a unique name for the form
+  form: "edit-merchant"
+})(Merchant);
+
+const mapStateToProps = state => {
+  return {
+    initialValues: {
+      firstName: "mido",
+      lastName: "ss"
+    }
+  };
+};
+
 const mapDispatchToProps = {
   deleteMerchant
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Merchant);

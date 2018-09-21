@@ -1,16 +1,12 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import { fetchMerchants } from "./actions";
 import Merchants from "./components/merchants-list";
+import AddMerchants from "./components/add-merchant";
 import Merchant from "./components/single-merchant";
 import Menu from "./components/menu";
 
-class App extends Component {
-  componentDidMount() {
-    this.props.fetchMerchants();
-  }
+export default class App extends Component {
   render() {
     return (
       <Router>
@@ -18,6 +14,7 @@ class App extends Component {
           <Menu />
           <Switch>
             <Route path="/merchant/:id" component={Merchant} />
+            <Route path="/add-merchant" component={AddMerchants} />
             <Route component={Merchants} />
           </Switch>
         </div>
@@ -25,12 +22,3 @@ class App extends Component {
     );
   }
 }
-
-const mapDispatchToProps = {
-  fetchMerchants
-};
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(App);

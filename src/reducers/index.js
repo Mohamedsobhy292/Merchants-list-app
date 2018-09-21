@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { reducer as formReducer } from "redux-form";
 
 const merchantsInitialState = {
   items: {},
@@ -27,9 +28,9 @@ const merchants = function(state = merchantsInitialState, action) {
         ...state,
         isLoading: false,
         error: null,
-        // items: [...state.items, ...action.payload]
         items: normalizeItems(action.payload)
       };
+    case "ADD_SINGLE_MERCHANT_FULFILLED":
     case "FETCH_SINGLE_MERCHANT_FULFILLED":
       return {
         ...state,
@@ -65,5 +66,6 @@ const merchants = function(state = merchantsInitialState, action) {
 };
 
 export default combineReducers({
-  merchants
+  merchants,
+  form: formReducer
 });

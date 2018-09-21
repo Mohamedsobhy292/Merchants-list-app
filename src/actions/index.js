@@ -18,3 +18,10 @@ export const deleteMerchant = id => ({
     .delete(`${APIUrl}/merchant/${id}`)
     .then(response => response.data)
 });
+
+export const addMerchant = values => ({
+  type: "ADD_SINGLE_MERCHANT",
+  payload: axios
+    .post(`${APIUrl}/merchant`, values)
+    .then(response => response.data)
+});

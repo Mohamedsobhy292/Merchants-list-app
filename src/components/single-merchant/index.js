@@ -51,8 +51,7 @@ class SingleMerchant extends Component {
           <HeaderCell>Amount</HeaderCell>
           <HeaderCell>Created</HeaderCell>
         </StyledHeader>
-        {bids &&
-          !!bids.length &&
+        {bids && !!bids.length ? (
           bids.sort((a, b) => b.created - a.created).map((bid, index) => {
             return (
               <StyledListItem key={index}>
@@ -63,7 +62,10 @@ class SingleMerchant extends Component {
                 </HeaderCell>
               </StyledListItem>
             );
-          })}
+          })
+        ) : (
+          <span>Merchant has no Bids</span>
+        )}
       </div>
     );
   }
