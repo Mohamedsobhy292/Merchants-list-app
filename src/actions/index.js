@@ -25,3 +25,17 @@ export const addMerchant = values => ({
     .post(`${APIUrl}/merchant`, values)
     .then(response => response.data)
 });
+
+export const editMerchant = (id, values) => ({
+  type: "EDIT_SINGLE_MERCHANT",
+  payload: axios
+    .patch(`${APIUrl}/merchant/${id}`, values)
+    .then(response => response.data)
+});
+
+export const editMode = id => ({
+  type: "EDIT_MERCHANT_MODE",
+  payload: {
+    id
+  }
+});

@@ -97,20 +97,11 @@ AddMerchantForm = reduxForm({
   form: "add-merchant"
 })(AddMerchantForm);
 
-const mapStateToProps = state => {
-  return {
-    initialValues: {
-      firstName: "mido",
-      lastName: "ss"
-    }
-  };
-};
-
 const mapDispatchToProps = {
   addMerchant
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(AddMerchantForm);

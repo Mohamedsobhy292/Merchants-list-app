@@ -46,9 +46,11 @@ exports.editMerchant = async function editMerchant(req, res) {
         .status(400)
         .send({ error: 401, message: "You cant edit this merchant" });
     } else {
-      await Merchant.findByIdAndUpdate(id, { $set: req.body }).then(result =>
-        res.json(result)
-      );
+      await Merchant.findByIdAndUpdate(
+        id,
+        { $set: req.body },
+        { new: true }
+      ).then(result => res.json(result));
     }
   } catch (e) {
     res.status(400).send({ error: 400, message: e });

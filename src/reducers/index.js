@@ -4,7 +4,8 @@ import { reducer as formReducer } from "redux-form";
 const merchantsInitialState = {
   items: {},
   error: null,
-  isLoading: false
+  isLoading: false,
+  editMode: null
 };
 
 const normalizeItems = items => {
@@ -32,6 +33,7 @@ const merchants = function(state = merchantsInitialState, action) {
       };
     case "ADD_SINGLE_MERCHANT_FULFILLED":
     case "FETCH_SINGLE_MERCHANT_FULFILLED":
+    case "EDIT_SINGLE_MERCHANT_FULFILLED":
       return {
         ...state,
         isLoading: false,
@@ -58,6 +60,12 @@ const merchants = function(state = merchantsInitialState, action) {
         isLoading: false,
         error: null,
         items
+      };
+
+    case "EDIT_MERCHANT_MODE":
+      return {
+        ...state,
+        editMode: action.payload.id
       };
 
     default:

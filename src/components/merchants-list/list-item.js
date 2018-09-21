@@ -5,8 +5,9 @@ import styled, { css } from "styled-components";
 import defaultImg from "./avatar.png";
 import { Link } from "react-router-dom";
 import { required, email, number } from "../../utils/validation";
+import { compose } from "redux";
 
-import { deleteMerchant } from "../../actions";
+import { deleteMerchant, editMerchant, editMode } from "../../actions";
 
 export const StyledListItem = styled.div`
   display: flex;
@@ -99,18 +100,22 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => (
 
 class Merchant extends Component {
   state = {
-    disableDeleteBtn: false,
-    editMode: false
+    disableDeleteBtn: false
   };
 
-  handleEdit = () => {
-    this.setState({ editMode: true });
+  handleEdit = id => {
+    this.props.editMode(id);
   };
+
+  handleSubmit = () => {
+    const values = this.props.formValues;
+    const id = this.props.item._id;
+    this.props.editMerchant(id, values);
+  };
+
   handleDelete = id => {
     this.setState({ disableDeleteBtn: true });
-    this.props
-      .deleteMerchant(id)
-      .finally(() => this.setState({ disableDeleteBtn: false }));
+    this.props.deleteMerchant(id).finally(() => this.props.editMode(null));
   };
 
   render() {
@@ -132,7 +137,7 @@ class Merchant extends Component {
           </div>
           <div className="content">
             <h4 className="name">
-              {this.state.editMode ? (
+              {this.props.editId === _id ? (
                 <Field
                   name="firstName"
                   type="text"
@@ -147,8 +152,14 @@ class Merchant extends Component {
               )}
             </h4>
             <span className="email">
-              {this.state.editMode ? (
-                <InputField type="text" value={email} />
+              {this.props.editId === _id ? (
+                <Field
+                  name="lastName"
+                  type="text"
+                  component={renderField}
+                  placeholder="lastName"
+                  validate={[required]}
+                />
               ) : (
                 email
               )}
@@ -156,8 +167,14 @@ class Merchant extends Component {
           </div>
         </NameCell>
         <ItemCell>
-          {this.state.editMode ? (
-            <InputField type="text" value={phone} />
+          {this.props.editId === _id ? (
+            <Field
+              name="phone"
+              type="text"
+              component={renderField}
+              placeholder="phone"
+              validate={[required]}
+            />
           ) : (
             phone
           )}
@@ -167,10 +184,12 @@ class Merchant extends Component {
           <Link to={`/merchant/${_id}`}>{bids && bids.length}</Link>
         </BidsCell>
         <ActionsCell>
-          {this.state.editMode ? (
-            <EditButton>Submit</EditButton>
+          {this.props.editId === _id ? (
+            <EditButton onClick={this.handleSubmit}>Submit</EditButton>
           ) : (
-            <EditButton onClick={this.handleEdit}>Edit</EditButton>
+            <EditButton onClick={this.handleEdit.bind(null, _id)}>
+              Edit
+            </EditButton>
           )}
           <DeleteButton
             onClick={this.handleDelete.bind(null, _id)}
@@ -184,22 +203,30 @@ class Merchant extends Component {
   }
 }
 
-Merchant = reduxForm({
-  // a unique name for the form
-  form: "edit-merchant"
-})(Merchant);
+Merchant = compose(
+  connect((state, props) => ({ form: `edit-merchant-${props.item._id}` })),
+  reduxForm()
+)(Merchant);
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
+  const formName = `edit-merchant-${ownProps.item._id}`;
+  const formValues = state.form[formName] && state.form[formName].values;
+  const item = ownProps.item || {};
   return {
+    editId: state.merchants.editMode,
+    formValues,
     initialValues: {
-      firstName: "mido",
-      lastName: "ss"
+      firstName: item.firstName,
+      lastName: item.lastName,
+      phone: item.phone
     }
   };
 };
 
 const mapDispatchToProps = {
-  deleteMerchant
+  deleteMerchant,
+  editMerchant,
+  editMode
 };
 
 export default connect(
