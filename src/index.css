@@ -12,10 +12,22 @@ body {
 }
 
 .App {
-  width: 980px;
+  padding-left: 0;
   margin: auto;
+
+}
+
+@media screen and (min-width: 992px) {
+  .App {
+    padding-left: 250px;
+  }
 }
 
 img {
   max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }

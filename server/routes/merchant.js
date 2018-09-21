@@ -6,6 +6,9 @@ const router = express.Router();
 /* GET ALL MERCHANT. */
 router.get("/", merchantCtrl.getMerchants);
 
+/* GET SINGLE MERCHANT. */
+router.get("/:id", merchantCtrl.getSingleMerchant);
+
 /* ADD MERCHANT */
 router.post("/", merchantCtrl.addMerchant);
 

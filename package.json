@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "eslint-config-prettier": "^3.0.1",
     "eslint-plugin-prettier": "^2.6.2",
@@ -14,7 +15,12 @@
     "pretty-quick": "^1.6.0",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.5",
+    "redux": "^4.0.0",
+    "redux-promise-middleware": "^5.1.1",
+    "redux-thunk": "^2.3.0",
     "styled-components": "^3.4.6"
   },
   "scripts": {
@@ -22,7 +28,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "server": "nodemon server/app.js",
+    "server:watch": "nodemon server/app.js",
+    "server": "node server/app.js",
     "precommit": "pretty-quick --staged"
   }
 }

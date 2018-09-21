@@ -2,7 +2,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
-const dbURL = "mongodb://localhost/merchants";
+const env = process.env.NODE_ENV || "development";
+const config = require("./config")[env];
+
+const dbURL = config.database.url;
+console.log(dbURL);
 
 mongoose.connect(
   dbURL,

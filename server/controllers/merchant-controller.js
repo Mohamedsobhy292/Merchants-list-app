@@ -2,11 +2,18 @@ const mongoose = require("mongoose");
 const Merchant = mongoose.model("Merchant");
 
 exports.getMerchants = async function getMerchants(req, res) {
-  const page = (req.query.page - 1) * 10 || 0;
-  const merchants = await Merchant.find()
-    .skip(page)
-    .limit(10);
+  // const page = (req.query.page - 1) * 10 || 0;
+  // const merchants = await Merchant.find()
+  //   .skip(page)
+  //   .limit(10);
+  const merchants = await Merchant.find();
   res.json(merchants);
+};
+
+exports.getSingleMerchant = async function getMerchants(req, res) {
+  const id = req.params.id;
+  const merchant = await Merchant.findById(id);
+  res.json(merchant);
 };
 
 exports.addMerchant = async function getMerchants(req, res) {
