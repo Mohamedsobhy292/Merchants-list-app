@@ -69,6 +69,13 @@ export const CancelButton = styled(Button)`
   color: #fff;
 `;
 
+export const ErrorMsg = styled.span`
+  color: #ef5350;
+  margin-top: 5px;
+  display: inline-block;
+  font-size: 10px;
+`;
+
 export const InputField = styled.input`
   background: #f4f8f9;
   border: none;

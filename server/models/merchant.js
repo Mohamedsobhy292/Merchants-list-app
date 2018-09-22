@@ -19,7 +19,7 @@ const merchantSchema = new mongoose.Schema({
     trim: true
   },
   phone: {
-    type: String,
+    type: Number,
     required: "Please check your phone",
     trim: true
   },

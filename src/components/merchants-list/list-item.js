@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import defaultImg from "./avatar.png";
 import { Link } from "react-router-dom";
-import { required, email, number } from "../../utils/validation";
+import { required, number } from "../../utils/validation";
 import { compose } from "redux";
 
 import { deleteMerchant, editMerchant, editMode } from "../../actions";
@@ -17,7 +17,8 @@ import {
   DeleteButton,
   SubmitButton,
   CancelButton,
-  ActionsCell
+  ActionsCell,
+  ErrorMsg
 } from "./merchant-list-styles";
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => (
@@ -25,7 +26,7 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => (
     <label>{label}</label>
     <div>
       <InputField {...input} placeholder={label} type={type} />
-      {touched && (error && <span>{error}</span>)}
+      {touched && (error && <ErrorMsg>{error}</ErrorMsg>)}
     </div>
   </div>
 );
@@ -107,7 +108,7 @@ class Merchant extends Component {
               type="text"
               component={renderField}
               placeholder="phone"
-              validate={[required]}
+              validate={[required, number]}
             />
           ) : (
             phone
