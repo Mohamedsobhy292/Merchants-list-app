@@ -1,92 +1,24 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import styled, { css } from "styled-components";
 import defaultImg from "./avatar.png";
 import { Link } from "react-router-dom";
 import { required, email, number } from "../../utils/validation";
 import { compose } from "redux";
 
 import { deleteMerchant, editMerchant, editMode } from "../../actions";
-
-export const StyledListItem = styled.div`
-  display: flex;
-  background: #fff;
-  margin-bottom: 10px;
-  padding: 10px 10px;
-  font-size: 14px;
-  box-shadow: 0 0 5px #cccccc54;
-`;
-
-export const ItemCell = styled.div`
-  width: 15%;
-  display: flex;
-  align-items: center;
-`;
-
-export const BidsCell = styled.div`
-  width: 10%;
-  display: flex;
-  align-items: center;
-  text-decoration: underline;
-`;
-
-export const NameCell = styled(ItemCell)`
-  width: 40%;
-  .img {
-    width: 50px;
-    height: 50px;
-    overflow: hidden;
-    border-radius: 50%;
-    margin-right: 8px;
-  }
-  .name {
-    margin-bottom: 4px;
-    font-size: 14px;
-    font-weight: normal;
-  }
-
-  .email {
-    color: #ccc;
-    font-size: 11 px;
-  }
-`;
-
-export const Button = styled.button`
-  padding: 5px 15px;
-  cursor: pointer;
-  border: none;
-  border-radius: 2px;
-`;
-export const EditButton = styled(Button)`
-  background: #ffb74d;
-  color: #fff;
-`;
-
-export const InputField = styled.input`
-  background: #f4f8f9;
-  border: none;
-  display: inline-block;
-  padding: 5px;
-  width: 90%;
-  border-radius: 5px;
-`;
-
-export const DeleteButton = styled(Button)`
-  background: #ef5350;
-  color: #fff;
-  ${props =>
-    props.disabled &&
-    css`
-      opacity: 0.3;
-    `};
-`;
-
-export const ActionsCell = styled(ItemCell)`
-  button:not(last-of-type) {
-    margin-right: 8px;
-  }
-`;
+import {
+  StyledListItem,
+  ItemCell,
+  BidsCell,
+  NameCell,
+  EditButton,
+  InputField,
+  DeleteButton,
+  SubmitButton,
+  CancelButton,
+  ActionsCell
+} from "./merchant-list-styles";
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => (
   <div>
@@ -110,12 +42,14 @@ class Merchant extends Component {
   handleSubmit = () => {
     const values = this.props.formValues;
     const id = this.props.item._id;
-    this.props.editMerchant(id, values);
+    this.props.editMerchant(id, values).then(() => this.props.editMode(null));
   };
 
   handleDelete = id => {
     this.setState({ disableDeleteBtn: true });
-    this.props.deleteMerchant(id).finally(() => this.props.editMode(null));
+    this.props
+      .deleteMerchant(id)
+      .finally(() => this.setState({ disableDeleteBtn: false }));
   };
 
   render() {
@@ -130,7 +64,7 @@ class Merchant extends Component {
       _id
     } = this.props.item;
     return (
-      <StyledListItem>
+      <StyledListItem editMode={this.props.editId === _id}>
         <NameCell>
           <div className="img">
             <img src={avatarUrl ? avatarUrl : defaultImg} alt="avatar" />
@@ -183,20 +117,28 @@ class Merchant extends Component {
         <BidsCell>
           <Link to={`/merchant/${_id}`}>{bids && bids.length}</Link>
         </BidsCell>
+
+        {/* ACTION CELL */}
+
         <ActionsCell>
           {this.props.editId === _id ? (
-            <EditButton onClick={this.handleSubmit}>Submit</EditButton>
+            <SubmitButton onClick={this.handleSubmit}>Submit</SubmitButton>
           ) : (
             <EditButton onClick={this.handleEdit.bind(null, _id)}>
               Edit
             </EditButton>
           )}
-          <DeleteButton
-            onClick={this.handleDelete.bind(null, _id)}
-            disabled={this.state.disableDeleteBtn}
-          >
-            Remove
-          </DeleteButton>
+
+          {this.props.editId === _id ? (
+            <CancelButton onClick={this.handleEdit}>Cancel</CancelButton>
+          ) : (
+            <DeleteButton
+              onClick={this.handleDelete.bind(null, _id)}
+              disabled={this.state.disableDeleteBtn}
+            >
+              Remove
+            </DeleteButton>
+          )}
         </ActionsCell>
       </StyledListItem>
     );
