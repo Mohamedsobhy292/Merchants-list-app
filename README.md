@@ -4,9 +4,9 @@ a React Webapp to view list of merchants and be able to edit and delete and add 
 
 # Used Technolgies
 
-- Backend
 - Nodejs
 - express
+- MongoDB
 - Mongoose DRM
 
 - React
@@ -24,6 +24,7 @@ a React Webapp to view list of merchants and be able to edit and delete and add 
 
 ## HOW TO RUN PROJECT
 
+    - rename server/config-example.js to server/config.js
     - `yarn server` : to run server
     - navigate to `http://localhost:3002/addData`  to add some dummy data
     - ` yarn start` : to start frontend app
